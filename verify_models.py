@@ -7,7 +7,7 @@ Tests the model names from .env and reports pass/fail for each.
 import sys, os
 sys.path.insert(0, os.path.dirname(__file__))
 
-from stickman_studio.config import settings, init_vertex
+from pov_studio.config import settings, init_vertex
 init_vertex()
 
 PASS = 0; FAIL = 0
@@ -47,7 +47,7 @@ def test_imagen(name: str):
         from vertexai.preview.vision_models import ImageGenerationModel
         model = ImageGenerationModel.from_pretrained(name)
         images = model.generate_images(
-            prompt="a simple stickman",
+            prompt="a simple POV",
             number_of_images=1,
             aspect_ratio="16:9",
             add_watermark=False,

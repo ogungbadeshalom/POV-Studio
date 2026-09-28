@@ -11,7 +11,7 @@ Usage:
     from ai_engine import AIEngine
 
     ai = AIEngine()
-    img = ai.generate_scene_image("a stickman waving")
+    img = ai.generate_scene_image("an illustrated character waving")
     img.save("scene.png")
 
     mp4_bytes = ai.generate_video_clip("scene.png", "waving slowly")
@@ -25,9 +25,9 @@ import time
 from pathlib import Path
 from typing import Optional
 
-from stickman_studio.config import settings, init_vertex
+from pov_studio.config import settings, init_vertex
 
-log = logging.getLogger("stickman_studio.ai_engine")
+log = logging.getLogger("pov_studio.ai_engine")
 
 
 # --------------------------------------------------------------------------- #
@@ -259,10 +259,10 @@ def _download_gcs_bytes(gcs_uri: str) -> bytes:
 # Module-level convenience: full pipeline (keeps orchestrator compatible)
 # --------------------------------------------------------------------------- #
 
-from stickman_studio.models import StoryBoard
+from pov_studio.models import StoryBoard
 
 # Re-export so ``from ai_engine import generate_script`` still works.
-# These are thin wrappers over the dedicated ``stickman_studio.phases.*``
+# These are thin wrappers over the dedicated ``pov_studio.phases.*``
 # modules; they do *not* use AIEngine internally (the phases do their own
 # initialisation for now).
 
@@ -271,7 +271,7 @@ def generate_script(
     project_dir: str | Path,
     scene_count: Optional[int] = None,
 ) -> StoryBoard:
-    from stickman_studio.phases.phase1_script import run as _phase1
+    from pov_studio.phases.phase1_script import run as _phase1
     init_vertex()
     return _phase1(topic, Path(project_dir), scene_count)
 
@@ -282,7 +282,7 @@ def generate_images(
     use_reference: bool = True,
 ) -> StoryBoard:
     import os as _os
-    from stickman_studio.phases.phase2_images import run as _phase2
+    from pov_studio.phases.phase2_images import run as _phase2
     _os.environ["IMAGEN_USE_REFERENCE"] = "1" if use_reference else "0"
     init_vertex()
     return _phase2(board, Path(project_dir))
@@ -292,7 +292,7 @@ def generate_videos(
     board: StoryBoard,
     project_dir: str | Path,
 ) -> StoryBoard:
-    from stickman_studio.phases.phase3_video import run as _phase3
+    from pov_studio.phases.phase3_video import run as _phase3
     init_vertex()
     return _phase3(board, Path(project_dir))
 
@@ -302,14 +302,14 @@ def generate_slideshow(
     project_dir: str | Path,
     audio_paths: list[Path],
 ) -> StoryBoard:
-    from stickman_studio.phases.phase3_slideshow import run as _slideshow
+    from pov_studio.phases.phase3_slideshow import run as _slideshow
     return _slideshow(board, Path(project_dir), audio_paths)
 
 
 def add_subtitles(
     project_dir: str | Path,
 ) -> Path | None:
-    from stickman_studio.phases.phase4_subtitles import run as _subtitles
+    from pov_studio.phases.phase4_subtitles import run as _subtitles
     return _subtitles(Path(project_dir))
 
 
@@ -318,7 +318,7 @@ def assemble_project(
     project_dir: str | Path,
     audio_paths: Optional[list[Path]] = None,
 ) -> dict:
-    from stickman_studio.phases.phase4_assembly import run as _phase4
+    from pov_studio.phases.phase4_assembly import run as _phase4
     return _phase4(board, Path(project_dir), audio_paths)
 
 

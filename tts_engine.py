@@ -11,7 +11,7 @@ import asyncio
 import logging
 from pathlib import Path
 
-log = logging.getLogger("stickman_studio.tts")
+log = logging.getLogger("pov_studio.tts")
 
 import os
 
@@ -148,7 +148,9 @@ class TTSEngine:
         output.parent.mkdir(parents=True, exist_ok=True)
         voice = os.getenv("KOKORO_VOICE", "am_adam")
         wrapper = os.getenv("KOKORO_WRAPPER", "/root/flow_sync/kokoro_synth.py")
-        kv = os.getenv("KOKORO_VENV", "/root/tts-chatterbox/bin/python")
+        # Kokoro is installed in the Hermes venv; the old /root/tts-chatterbox
+        # venv was deleted, so default to the working interpreter here.
+        kv = os.getenv("KOKORO_VENV", "/usr/local/lib/hermes-agent/venv/bin/python")
 
         with tempfile.NamedTemporaryFile("w", suffix=".txt", delete=False, encoding="utf-8") as fh:
             fh.write(text)

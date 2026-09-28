@@ -6,7 +6,7 @@ Generates every scene image with the OpenAI-image-capable Gemini model
 on the VPS — no T470, no browser, no Google Flow session.
 
 Every prompt is composed from zenn_style CHARACTER_LOCK + STYLE_LOCK so the
-same minimalist stickman stays pixel-consistent across all scenes.
+same minimalist POV stays pixel-consistent across all scenes.
 
 Output: PNG/JPEG files in projects/<slug>/images/, paths recorded on scenes.
 
@@ -28,11 +28,11 @@ from ..models import StoryBoard
 from ..retry import with_retry
 from zenn_style import CHARACTER_LOCK, STYLE_LOCK
 
-log = logging.getLogger("stickman_studio.phase2")
+log = logging.getLogger("pov_studio.phase2")
 
 API_KEY = os.getenv("GEMINI_API_KEY", "").strip()
 IMAGEN_MODEL = os.getenv("IMAGEN_GENERATE_MODEL", "gemini-3.1-flash-image").strip()
-IMAGE_ASPECT = os.getenv("IMAGE_ASPECT", "9:16").strip()  # vertical Shorts by default
+IMAGE_ASPECT = os.getenv("IMAGE_ASPECT", "16:9").strip()  # vertical Shorts by default
 IMAGE_PERCENT = int(os.getenv("IMAGE_PERCENT", "70"))
 IMAGE_MAGIC = os.getenv("IMAGE_MAGIC", "enable").strip()
 

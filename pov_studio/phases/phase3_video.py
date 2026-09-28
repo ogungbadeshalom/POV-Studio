@@ -20,7 +20,7 @@ from ..config import settings, init_vertex
 from ..models import StoryBoard
 from ..retry import with_retry
 
-log = logging.getLogger("stickman_studio.phase3")
+log = logging.getLogger("pov_studio.phase3")
 
 
 def _client():
@@ -132,7 +132,7 @@ def run(board: StoryBoard, project_dir: Path) -> StoryBoard:
                  scene.index + 1, len(board.scenes), scene.title)
 
         motion_prompt = (
-            f"Animate this minimalist stickman scene with subtle, smooth motion. "
+            f"Animate this minimalist POV scene with subtle, smooth motion. "
             f"{scene.scene_prompt}. Keep the clean black-line-on-white style; "
             f"gentle camera, simple character movement."
         )

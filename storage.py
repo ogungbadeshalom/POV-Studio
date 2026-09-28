@@ -19,9 +19,9 @@ import logging
 from pathlib import Path
 from typing import Optional
 
-from stickman_studio.config import settings
+from pov_studio.config import settings
 
-log = logging.getLogger("stickman_studio.storage")
+log = logging.getLogger("pov_studio.storage")
 
 
 class StorageManager:

@@ -1,7 +1,7 @@
 
 <p align="center">
-  <img src="https://img.shields.io/badge/Stickman-Studio-blue?style=for-the-badge&logo=python" alt="Stickman Studio">
-  <img src="https://img.shields.io/github/actions/workflow/status/saiedpod-bot/Stickman-Studio/ci.yml?style=for-the-badge&logo=github" alt="CI">
+  <img src="https://img.shields.io/badge/POV-Studio-blue?style=for-the-badge&logo=python" alt="POV Studio">
+  <img src="https://img.shields.io/github/actions/workflow/status/saiedpod-bot/POV-Studio/ci.yml?style=for-the-badge&logo=github" alt="CI">
   <br>
   <strong>🎬 Autonomous AI Video Production Pipeline</strong>
 </p>
@@ -16,7 +16,7 @@
 </p>
 
 <p align="center">
-  <strong>🤖 Automate AI-powered stickman animation production, from script to YouTube</strong>
+  <strong>🤖 Automate AI-powered POV animation production, from script to YouTube</strong>
 </p>
 
 ---
@@ -26,7 +26,7 @@
 | Feature | Description |
 |---------|-------------|
 | 🤖 **AI Scriptwriting** | Gemini 2.5 Flash generates viral hooks + scene-by-scene storyboard |
-| 🎨 **AI Image Generation** | Imagen 3.0 creates consistent stickman characters across scenes |
+| 🎨 **AI Image Generation** | Imagen 3.0 creates consistent POV characters across scenes |
 | 🎬 **Slideshow Mode** | Ken Burns zoom effect — **$0 cost** for video generation |
 | 🎥 **Veo Mode** | Google Veo 2.0 AI video clips (premium, allow-listed) |
 | 🗣️ **Free TTS** | `edge-tts` — neural voiceovers **100% free, no API key** |
@@ -144,8 +144,8 @@ ffmpeg -version
 ### 4. 📥 Clone the Repository
 
 ```bash
-git clone https://github.com/saiedpod-bot/Stickman-Studio.git
-cd Stickman-Studio
+git clone https://github.com/saiedpod-bot/POV-Studio.git
+cd POV-Studio
 ```
 
 ---
@@ -194,8 +194,8 @@ pip install edge-tts          # Free local TTS (neural voices)
 
 1. Go to [console.cloud.google.com](https://console.cloud.google.com)
 2. At the top bar, click the project dropdown → **New Project**
-3. Enter project name (e.g. `stickman-studio`)
-4. Note the **Project ID** (e.g. `stickman-studio-123456`) — you'll need it later
+3. Enter project name (e.g. `POV-studio`)
+4. Note the **Project ID** (e.g. `POV-studio-123456`) — you'll need it later
 5. Click **Create**
 
 ---
@@ -223,7 +223,7 @@ This is how the project authenticates with Google Cloud:
 
 1. Go to [Service Accounts](https://console.cloud.google.com/iam-admin/serviceaccounts)
 2. Click **+ Create Service Account**
-3. Name: `stickman-studio-sa`
+3. Name: `POV-studio-sa`
 4. Click **Create and Continue**
 5. Under **Grant access** → Add roles:
    - **Vertex AI User** (`roles/aiplatform.user`)
@@ -236,13 +236,13 @@ This is how the project authenticates with Google Cloud:
 2. Go to **Keys** tab → **Add Key** → **Create New Key**
 3. Choose **JSON** → **Create**
 4. A `.json` file will download automatically — **keep it safe!**
-5. Rename it if you like (e.g. `stickman-studio-key.json`)
+5. Rename it if you like (e.g. `POV-studio-key.json`)
 
 ---
 
 ### 10. ⚙️ Configure Environment (.env)
 
-1. **Move the service account JSON key** to the project root folder (`Stickman-Studio/`)
+1. **Move the service account JSON key** to the project root folder (`POV-Studio/`)
 2. Copy the example env file:
    ```bash
    cp .env.example .env
@@ -251,10 +251,10 @@ This is how the project authenticates with Google Cloud:
 
    ```ini
    # Your GCP project ID (from Step 7)
-   GCP_PROJECT_ID=stickman-studio-123456
+   GCP_PROJECT_ID=POV-studio-123456
 
    # Path to the service account key (from Step 9)
-   GOOGLE_APPLICATION_CREDENTIALS=stickman-studio-key.json
+   GOOGLE_APPLICATION_CREDENTIALS=POV-studio-key.json
 
    # GCP region (keep default)
    GCP_LOCATION=us-central1
@@ -348,7 +348,7 @@ To enable automatic publishing to YouTube:
 1. Go to [Google Cloud Console → Credentials](https://console.cloud.google.com/apis/credentials)
 2. Click **+ Create Credentials** → **OAuth Client ID**
 3. Application type: **Desktop app**
-4. Name: `Stickman Studio YouTube Uploader`
+4. Name: `POV Studio YouTube Uploader`
 5. Click **Create**
 6. Click **Download JSON** — rename it to `client_secrets.json`
 7. **Move `client_secrets.json`** to the project root folder
@@ -407,7 +407,7 @@ Topic Input
 
 ## 🎬 Sample Outputs
 
-Pre-generated example videos showing the pipeline output (also available on the [Releases page](https://github.com/saiedpod-bot/Stickman-Studio/releases)):
+Pre-generated example videos showing the pipeline output (also available on the [Releases page](https://github.com/saiedpod-bot/POV-Studio/releases)):
 
 <table>
   <tr>
@@ -511,7 +511,7 @@ python -c "from scheduler import run_autonomous_cycle; run_autonomous_cycle('Sci
 ## 🏗️ Project Structure
 
 ```
-stickman_studio/
+pov_studio/
 ├── app.py                    # Streamlit dashboard
 ├── orchestrator.py           # CLI + importable pipeline runner
 ├── content_planner.py        # Gemini → viral video ideas
@@ -526,7 +526,7 @@ stickman_studio/
 ├── samples/                   # Pre-generated example videos
 ├── assets/
 │   └── bgm.mp3               # Optional background music
-├── stickman_studio/
+├── pov_studio/
 │   ├── config.py             # .env loading + Vertex AI init
 │   ├── logging_setup.py      # Console + file logging
 │   ├── models.py             # Scene / StoryBoard dataclasses
@@ -561,7 +561,7 @@ stickman_studio/
 ## 🔖 Topics / Hashtags
 
 ```
-stickman-studio  ai-video-generation  google-vertex-ai
+POV-studio  ai-video-generation  google-vertex-ai
 gemini  imagen  veo  youtube-automation  content-creator
 python  streamlit  edge-tts  text-to-video
 free-tts  ai-animation  video-pipeline

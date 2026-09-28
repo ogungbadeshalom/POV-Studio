@@ -8,7 +8,7 @@ from pathlib import Path
 
 from ..models import StoryBoard
 
-log = logging.getLogger("stickman_studio.phase3_slideshow")
+log = logging.getLogger("pov_studio.phase3_slideshow")
 
 _FFMPEG: str | None = None
 

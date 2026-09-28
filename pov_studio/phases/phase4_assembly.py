@@ -18,7 +18,7 @@ from pathlib import Path
 
 from ..models import StoryBoard
 
-log = logging.getLogger("stickman_studio.phase4")
+log = logging.getLogger("pov_studio.phase4")
 
 _FFMPEG: str | None = None
 _BGM_PATH: Path = Path("assets/bgm.mp3")

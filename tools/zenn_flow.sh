@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # =============================================================================
-# zenn_flow.sh — fully-automated ZENN stickman video, all on the VPS.
+# zenn_flow.sh — fully-automated ZENN POV video, all on the VPS.
 #
 #   topic -> Gemini storyboard (15 scenes) -> Google Flow (Nano Banana 2, via
 #   gflow CLI, real Google Flow on the VPS) -> per-scene images -> vertical
@@ -17,9 +17,9 @@ TOPIC="$1"; shift || true
 SCENES=8
 OUT="/root/zenn_videos"
 GFLOW_HOME="/root/gflow-home"
-GFLOW_PROFILE="stickman"
+GFLOW_PROFILE="POV"
 GFLOW_FORK="/root/gflow-fork"
-STICK="/root/stickman-fork"
+STICK="/root/POV-fork"
 PY="${STICK}/.venv/bin/python3"
 # orchestrator uses the hermes venv python3 — reconcile:
 PY3="/usr/local/lib/hermes-agent/venv/bin/python3"

@@ -8,9 +8,9 @@ Fully local-first: deterministic templates + Gemini scoring when available.
 """
 
 import os, sys, json, re
-sys.path.insert(0, '/root/stickman-fork')
+sys.path.insert(0, '/root/POV-fork')
 from dotenv import load_dotenv
-load_dotenv('/root/stickman-fork/.env')
+load_dotenv('/root/POV-fork/.env')
 
 DIRECTIONS = {
     "finance": "personal finance, investing, money psychology, money mistakes",
@@ -39,7 +39,7 @@ def _build_prompt(direction: str, n: int = 10):
     domain = DIRECTIONS.get(direction, direction)
     return f"""
 You are an elite content strategist and behavioral psychologist for a minimalist
-stickman explainer YouTube channel.
+POV explainer YouTube channel.
 
 Generate exactly {n} compelling, click-driving content ideas in the domain:
 "{domain}"
@@ -131,7 +131,7 @@ def _template_ideas(direction: str, n: int):
             "core_problem": prob_tmpl.format(verb=v[len(seen) % len(v)], topic=topic),
             "hook": hook,
             "trigger": trig,
-            "unique_angle": f"A minimalist stickman explainer exposing {angle}.",
+            "unique_angle": f"A minimalist POV explainer exposing {angle}.",
             "transformation": "Recognize the real mechanism and gain a practical escape",
         })
         i += 1

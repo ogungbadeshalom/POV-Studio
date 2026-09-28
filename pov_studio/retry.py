@@ -21,7 +21,7 @@ from tenacity import (
 
 from .config import settings
 
-log = logging.getLogger("stickman_studio.retry")
+log = logging.getLogger("pov_studio.retry")
 
 # Exception types from google-api-core that indicate a retryable condition.
 _RATE_LIMIT_TYPE: type[BaseException] | None = None

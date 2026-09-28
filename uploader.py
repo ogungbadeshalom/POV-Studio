@@ -30,7 +30,7 @@ from google.auth.transport.requests import Request
 from google.oauth2.credentials import Credentials
 from google_auth_oauthlib.flow import InstalledAppFlow
 
-log = logging.getLogger("stickman_studio.uploader")
+log = logging.getLogger("pov_studio.uploader")
 
 _SCOPES = [
     "https://www.googleapis.com/auth/youtube.upload",

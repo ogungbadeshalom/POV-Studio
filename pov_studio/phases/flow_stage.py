@@ -34,7 +34,7 @@ load_dotenv()
 from ..models import StoryBoard
 from zenn_style import LOCK_MODE, character_sheet_prompt, full_image_prompt, one_line
 
-log = logging.getLogger("stickman_studio.flow_stage")
+log = logging.getLogger("pov_studio.flow_stage")
 
 MAX_WORDS = int(os.getenv("ZENN_MAX_PROMPT_WORDS", "140"))
 APPEND_NARRATION = os.getenv("ZENN_APPEND_NARRATION", "0") == "1"

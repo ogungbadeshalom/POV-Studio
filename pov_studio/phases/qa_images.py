@@ -6,7 +6,7 @@ Free-tier friendly (one small vision call per scene, sleeps between calls).
 
 Per scene it asks Gemini:
   matches_narration     0-5  does the picture literally show what the line says?
-  character_consistent  0-5  same stickman as the reference image (or the written spec)?
+  character_consistent  0-5  same POV as the reference image (or the written spec)?
   text_in_image         bool any letters/captions/speech bubbles drawn?
   missing               list what the line mentions that is NOT in the picture
   fix                   one sentence telling the image model what to change
@@ -38,7 +38,7 @@ from ..models import StoryBoard
 from ..retry import with_retry
 from zenn_style import CHARACTER_SHORT, full_image_prompt, one_line
 
-log = logging.getLogger("stickman_studio.qa")
+log = logging.getLogger("pov_studio.qa")
 
 API_KEY = os.getenv("GEMINI_API_KEY", "").strip()
 MODEL = os.getenv("STORYSB_GEMINI_MODEL", os.getenv("GEMINI_MODEL", "gemini-2.5-flash")).strip()
@@ -96,7 +96,7 @@ def _review(client, img: Path, narration: str, ref: Path | None) -> dict:
 
     parts = []
     if ref is not None:
-        parts.append(types.Part.from_text(text="REFERENCE character (the stickman must look like this):"))
+        parts.append(types.Part.from_text(text="REFERENCE character (the character must look like this):"))
         parts.append(types.Part.from_bytes(data=ref.read_bytes(), mime_type=_mime(ref)))
         spec = "the reference image above"
     else:

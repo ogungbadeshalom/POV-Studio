@@ -108,7 +108,7 @@ Target ranges for: duration, levels/video, words/level, WPM, cuts/min, image dur
 ## 4. Guardrails: originality, YouTube policy, finance compliance
 
 ### 4.1 Differentiation requirements (build these into the pipeline, not just the prompts)
-- **Own character:** use the ZENN stickman as "you" (own palette/line style). Never imitate the reference characters.
+- **Own character:** use the ZENN POV as "you" (own palette/line style). Never imitate the reference characters.
 - **Own voice & structure:** ≥ 3 rotating structural templates (ladder, before/after split, "one day, five incomes" etc.) so videos are not interchangeable.
 - **Own taxonomy & angle:** each video needs a unique thesis and at least 3 researched, sourced facts not found in the reference videos.
 - **No copied strings:** a checker (`tools/originality_check.py`) fails a script/title/description if it has > N-gram overlap with the Phase 0 reference corpus (default: any 8-word shingle match).
@@ -163,7 +163,7 @@ Already built (see earlier deliverables): `zenn_style.py`, `phase1_script.py`, `
 | Defect | Count | Cause | Fix status |
 |---|---|---|---|
 | Entity ids in narration and prompts (`worn_sneakers`, `red_timeclock`, …) — TTS would read "underscore" aloud | 26 narration lines, 24 prompts | Writer used entity ids as words | **Fixed in code** (`clean_text`, writer rule, `story_lint: id_leak`) |
-| `The the character is also in frame` | 52 | A find-replace of "stickman" → "the character" over hard-coded strings | **Fixed:** protagonist name is configurable (`ZENN_CHARACTER_FILE`), no hard-coded "stickman" |
+| `The the character is also in frame` | 52 | A find-replace of "POV" → "the character" over hard-coded strings | **Fixed:** protagonist name is configurable (`ZENN_CHARACTER_FILE`), no hard-coded "POV" |
 | Double period after entity descriptions (`duct tape..`) | 27 | Description ended with "." and the builder added another | **Fixed** |
 | Repeated phrases in prompts (`… mahogany table during a meeting a long mahogany table …`) | several (e.g. scenes 65, 69, 89, 90) | `object`/`setting` repeated what `action` already said | **Fixed** (deterministic de-dup + director rule) |
 | Protagonist forced into every frame as "also in frame, neutral" | 52 scenes; "neutral" is the mood in 26 scenes overall | Old beat schema had no way to say "not in shot" | **Fixed:** `presence = full | partial | none` (partial = first-person POV, hands only — fits the POV genre) |
@@ -192,7 +192,7 @@ Already built (see earlier deliverables): `zenn_style.py`, `phase1_script.py`, `
 **Design consequences (build these in):**
 1. **One image per prompt.** Force outputs-per-prompt = 1 in the batch tool so credits/time aren't multiplied. Record the credit cost of one image in `docs/deps.md` after a 10-image test.
 2. **Credit-aware scheduler.** `tools/flow_budget.py` computes images needed (scenes + regen allowance ~15%) vs. daily capacity, and splits generation into **day-sized batches**. The pipeline must pause/resume between days with no rework (manifest tracks each `scene_id → file`).
-3. **Character consistency via Flow, not just text.** Create the ZENN stickman once as a Flow **reusable character/element** (or a reference ingredient) from an approved character sheet (`character_sheet_prompt()` in `zenn_style.py`). Do the same for recurring entities (e.g. "the front door", "the apartment"). Then use `ZENN_LOCK_MODE=ref`. **Confirm** the T470 batch script can attach the reference/element on every generation; if it cannot, fall back to `ZENN_LOCK_MODE=text` (short text lock) and log it.
+3. **Character consistency via Flow, not just text.** Create the ZENN POV once as a Flow **reusable character/element** (or a reference ingredient) from an approved character sheet (`character_sheet_prompt()` in `zenn_style.py`). Do the same for recurring entities (e.g. "the front door", "the apartment"). Then use `ZENN_LOCK_MODE=ref`. **Confirm** the T470 batch script can attach the reference/element on every generation; if it cannot, fall back to `ZENN_LOCK_MODE=text` (short text lock) and log it.
 4. **One Flow project per video** (or per section) so references and history stay together and files are easy to collect.
 5. **Prompt length.** Keep prompts ≤ `ZENN_MAX_PROMPT_WORDS` (140). Long prompts previously caused transient `WireFormatError`.
 6. **Aspect ratio & resolution.** Set 16:9 in Flow (not only in prompt text). Ken Burns zoom degrades low-res sources: require source width ≥ 1920 px *after* leaving motion headroom (max zoom ≈ 8–10%). Use Flow's 2K upscale where the plan allows; otherwise cap zoom and add a local sharpen step. Add an automated check that rejects images below the minimum size.
@@ -237,7 +237,7 @@ S5 Lines + beats (existing phase1) ► S6 Visuals (Google Flow: Mode A scenes | 
    ► S14 Upload (private) ► S15 Analytics loop ► (S16 Shorts, optional)
 ```
 
-**Stack decision (fits Shally's stack):** Python for AI/data stages (extends existing `stickman_studio`), a TypeScript **Remotion** project for rendering, communicating only through JSON files. Orchestration v1 = a Python CLI (`povlv run <slug> --to S11`) + `manifest.json`. v2 (optional) = BullMQ/Redis workers on Hetzner via Coolify for queuing multiple videos. Do not build v2 until v1 makes one full video.
+**Stack decision (fits Shally's stack):** Python for AI/data stages (extends existing `pov_studio`), a TypeScript **Remotion** project for rendering, communicating only through JSON files. Orchestration v1 = a Python CLI (`povlv run <slug> --to S11`) + `manifest.json`. v2 (optional) = BullMQ/Redis workers on Hetzner via Coolify for queuing multiple videos. Do not build v2 until v1 makes one full video.
 
 ```
 projects/<slug>/
@@ -296,7 +296,7 @@ Both modes generate **only through Flow** via the `ImageEngine` interface (§5A)
 **Mode A — full-scene generation (existing ZENN → Flow):** `flow_stage.py` prompts, `ZENN_LOCK_MODE=ref` with the Flow reusable character/element, `ZENN_ASPECT="horizontal 16:9"`, one output per prompt. Batch by section; strict 1:1 count and strict import stay.
 
 **Mode B — compositing (recommended for scale, still Flow-made assets):**
-- **Pose library:** generate ~20–30 poses of the stickman in Flow (walking, sitting, pointing, shrug, panic, celebrating, counting money, etc.) on a flat, high-contrast solid background that shares no color with the character (the tee is green, so avoid green), then cut to transparent PNG with `rembg` (or color-key). Flow images have no alpha channel, so add an edge-quality check (no fringe/halo) and a human approval of the whole library once.
+- **Pose library:** generate ~20–30 poses of the character in Flow (walking, sitting, pointing, shrug, panic, celebrating, counting money, etc.) on a flat, high-contrast solid background that shares no color with the character (the tee is green, so avoid green), then cut to transparent PNG with `rembg` (or color-key). Flow images have no alpha channel, so add an edge-quality check (no fringe/halo) and a human approval of the whole library once.
 - **Background plates:** one Flow image per scene with **no character** ("empty room, …"), 16:9, same style lock.
 - Remotion composes plate + pose (position/scale/bob). Benefits: near-perfect consistency, far fewer credits (poses are reused; only plates are new), easy per-line animation.
 - Trade-off: less dynamic physical comedy than full scenes; keep Mode A for beats that need a unique interaction (`beat.needs_full_scene=true`).
@@ -363,7 +363,7 @@ Re-render 9:16 compositions from the same `timeline.json` (highlight one level);
 
 // beats.json  (extends existing structure)
 {"schema_version":1,"entities":{"front_door":"…"},"beats":[{
-  "line_id":"l0001","beat_type":"scene","subject":"the stickman","action":"…","object":"…","setting":"in …",
+  "line_id":"l0001","beat_type":"scene","subject":"the character","action":"…","object":"…","setting":"in …",
   "shot":"wide shot","pose":"deadpan","props":[],"entities":[],"metaphor":false,"on_screen_text":"",
   "motion":"push_in","pose_id":null,"chart_spec":null,"intentional_reuse":false,
   "presence":"full",              // full | partial (first-person hands) | none
@@ -475,7 +475,7 @@ Also output beat_type (scene|level_card|chart|text_overlay), motion (push_in|pul
 **Questions for Shally (agent: ask once, then log answers in `DECISIONS.md`):**
 1. Target video length and languages? (assumed 8–15 min, English)
 2. Primary jurisdiction for thresholds? (assumed US)
-3. Reuse the ZENN stickman as "you", or design a second character?
+3. Reuse the ZENN POV as "you", or design a second character?
 4. Which Google AI plan is the Flow account on (Free / Plus / Pro / Ultra)? That sets daily credit capacity. Any budget for a paid *voice* (images stay Flow-only)?
 5. Do you want a lead-magnet (calculator/newsletter) from day one?
 6. Confirm your Flow batch script can (a) attach a reference/element per generation, (b) set 16:9, and (c) force 1 output per prompt. If not, list what it can do.

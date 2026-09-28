@@ -17,10 +17,10 @@ import sys
 from pathlib import Path
 from typing import Optional
 
-from stickman_studio.config import settings, init_vertex
-from stickman_studio.retry import with_retry
+from pov_studio.config import settings, init_vertex
+from pov_studio.retry import with_retry
 
-log = logging.getLogger("stickman_studio.content_planner")
+log = logging.getLogger("pov_studio.content_planner")
 
 _RESPONSE_SCHEMA = {
     "type": "object",

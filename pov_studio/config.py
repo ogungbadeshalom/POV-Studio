@@ -5,7 +5,7 @@ Central configuration loader. Reads a .env file, validates required
 credentials, and initializes the Vertex AI SDK exactly once.
 
 Usage:
-    from stickman_studio.config import settings, init_vertex
+    from pov_studio.config import settings, init_vertex
     init_vertex()                 # idempotent
     print(settings.gcp_project_id)
 """

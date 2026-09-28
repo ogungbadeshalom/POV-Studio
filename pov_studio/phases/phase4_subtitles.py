@@ -18,7 +18,7 @@ from pathlib import Path
 
 from moviepy import VideoFileClip, TextClip, CompositeVideoClip
 
-log = logging.getLogger("stickman_studio.subtitles")
+log = logging.getLogger("pov_studio.subtitles")
 
 _FONT = "C:\\Windows\\Fonts\\arial.ttf"
 _FONT_SIZE = 28

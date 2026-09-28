@@ -59,7 +59,7 @@ from zenn_style import (
     validate_beats,
 )
 
-log = logging.getLogger("stickman_studio.phase1")
+log = logging.getLogger("pov_studio.phase1")
 
 API_KEY = os.getenv("GEMINI_API_KEY", "").strip()
 MODEL = os.getenv("STORYSB_GEMINI_MODEL", os.getenv("GEMINI_MODEL", "gemini-2.5-flash")).strip()
