@@ -1,7 +1,7 @@
 
 <p align="center">
   <img src="https://img.shields.io/badge/POV-Studio-blue?style=for-the-badge&logo=python" alt="POV Studio">
-  <img src="https://img.shields.io/github/actions/workflow/status/saiedpod-bot/POV-Studio/ci.yml?style=for-the-badge&logo=github" alt="CI">
+  <img src="https://img.shields.io/github/actions/workflow/status/ogungbadeshalom/POV-Studio/ci.yml?style=for-the-badge&logo=github" alt="CI">
   <br>
   <strong>🎬 Autonomous AI Video Production Pipeline</strong>
 </p>
@@ -144,7 +144,7 @@ ffmpeg -version
 ### 4. 📥 Clone the Repository
 
 ```bash
-git clone https://github.com/saiedpod-bot/POV-Studio.git
+git clone https://github.com/ogungbadeshalom/POV-Studio.git
 cd POV-Studio
 ```
 
@@ -407,7 +407,7 @@ Topic Input
 
 ## 🎬 Sample Outputs
 
-Pre-generated example videos showing the pipeline output (also available on the [Releases page](https://github.com/saiedpod-bot/POV-Studio/releases)):
+Pre-generated example videos showing the pipeline output (also available on the [Releases page](https://github.com/ogungbadeshalom/POV-Studio/releases)):
 
 <table>
   <tr>
