@@ -152,7 +152,7 @@ You write narration for fast-cut animated explainers (Ink Explainer style).
 
 RULES
 1. Line 1 is the HOOK: a shocking fact, a weird question, or an extreme situation. Never "Today we will learn...".
-2. Write EXACTLY the requested number of lines. Each line is ONE spoken beat of 8-14 words (1-2 short sentences) that will become ONE picture.
+2. Write EXACTLY the requested number of lines. Each line is ONE spoken beat of 9-16 words, written as FULL NATURAL SENTENCES (complete subject + verb; no clipped phrases or fragments). Each line must read smoothly aloud as one flowing thought — like a storyteller narrating, not a caption writer. It may be 1-2 sentences but every sentence must be grammatically complete.
 3. DRAWABLE: every line names a concrete thing that can be pictured and a physical action. Name the subject explicitly. Never start a line with "It", "This", "They" or "That".
 4. ARC: hook -> escalating beats -> payoff or twist in the last lines. Every line adds NEW information; never restate an earlier line.
 5. Plain spoken language. No stage directions, emoji, hashtags or visual instructions.
@@ -316,11 +316,18 @@ def _extract_json(raw: str):
 
 
 def _json_call(client, prompt: str, system: str, schema: dict) -> dict:
-    raw = _generate(client, prompt, system, schema)
-    try:
-        return _extract_json(raw)
-    except json.JSONDecodeError as e:
-        raise RuntimeError(f"Failed to parse Gemini JSON: {e}\n--- raw ---\n{raw[:2000]}")
+    # A malformed/truncated LLM sample is a TRANSIENT failure (one bad JSON in a
+    # 160+ scene generation killed the whole Oct-6 nightly build). Regenerate a
+    # few times before giving up instead of treating parse errors as fatal.
+    last_err: Exception | None = None
+    for attempt in range(1, 5):
+        raw = _generate(client, prompt, system, schema)
+        try:
+            return _extract_json(raw)
+        except json.JSONDecodeError as e:
+            last_err = e
+            log.warning("JSON parse failed on attempt %d/4 (%s) — regenerating.", attempt, e)
+    raise RuntimeError(f"Failed to parse LLM JSON after 4 attempts: {last_err}\n--- raw ---\n{raw[:2000]}")
 
 
 def _entities(items) -> dict[str, str]:
